@@ -6,11 +6,6 @@
 class DartsGame_Model_Game
 {
     /**
-     * The score at which every match starts.
-     */
-    const STARTING_SCORE = 501;
-
-    /**
      * @var array
      */
     private $turnsByPlayerID = array();
@@ -87,26 +82,5 @@ class DartsGame_Model_Game
         }
 
         return array();
-    }
-
-    /**
-     * Returns the player in the given position.
-     *
-     * @param DartsGame_Model_Player $player
-     * @return int
-     */
-    public function getScoreForPlayer(DartsGame_Model_Player $player)
-    {
-        $session = new DartsGame_Service_Session(); // Bad
-        $turns = $session->getGame()->getTurnsForPlayer($player);
-        $grandTotal = self::STARTING_SCORE;
-        foreach ($turns as $turn) {
-            $turnScore = $turn->getTotalScore();
-            if (!$turn->isBust($grandTotal)) {
-                $grandTotal -= $turnScore;
-            }
-        }
-
-        return $grandTotal;
     }
 }

@@ -6,7 +6,7 @@ $game = $this->game;
     <h2><?= $this->escape($game->getCurrentPlayer()->getFullName()) ?> - Round
         # <?= $this->escape($game->getCurrentTurnNumber()) ?></h2>
 
-    <h1>Points: <?= $this->escape($game->getScoreForPlayer($game->getCurrentPlayer())) ?></h1>
+    <h1>Points: <?= $this->escape($this->scoreBoard->getScoreForPlayer($game->getCurrentPlayer())) ?></h1>
 </div>
 
 <form id="<?= $this->form->getName() ?>" action="#" method="POST">
@@ -48,7 +48,7 @@ $game = $this->game;
     <?php foreach ($this->players as $player) { ?>
         <tr>
             <td><?= $this->escape($player->getFullName()) ?></td>
-            <td><?= $this->escape($game->getScoreForPlayer($player)) ?></td>
+            <td><?= $this->escape($this->scoreBoard->getScoreForPlayer($player)) ?></td>
         </tr>
     <?php } ?>
 </table>
