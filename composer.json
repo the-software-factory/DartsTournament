@@ -1,0 +1,12 @@
+{
+    "name": "the-software-factory/darts-tournament",
+    "description": "Zend Framework 1.x sample project",
+    "require": {
+        "zendframework/zendframework1": "v1.12.11",
+        "pimple/pimple":                "v3.0.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "v4.6.6",
+        "facebook/webdriver": "^0.6.0"
+    }
+}

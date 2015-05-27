@@ -1,0 +1,64 @@
+<?php
+/** @var DartsGame_Model_Game $game */
+$game = $this->game;
+?>
+<div id="turn-header">
+    <h2><?= $this->escape($game->getCurrentPlayer()->getFullName()) ?> - Round
+        # <?= $this->escape($game->getCurrentTurnNumber()) ?></h2>
+
+    <h1>Points: <?= $this->escape($game->getScoreForPlayer($game->getCurrentPlayer())) ?></h1>
+</div>
+
+<form id="<?= $this->form->getName() ?>" action="#" method="POST">
+    <table class="throws">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Score</th>
+            <th>Multiplier (e.g. x2 or x3)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><h3>Throw 1</h3></td>
+            <td><?= $this->form->scores0 ?></td>
+            <td><?= $this->form->multipliers0 ?></td>
+        </tr>
+        <tr>
+            <td><h3>Throw 2</h3></td>
+            <td><?= $this->form->scores1 ?></td>
+            <td><?= $this->form->multipliers1 ?></td>
+        </tr>
+        <tr>
+            <td><h3>Throw 3</h3></td>
+            <td><?= $this->form->scores2 ?></td>
+            <td><?= $this->form->multipliers2 ?></td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+
+<h2>Chart:</h2>
+<table>
+    <tr>
+        <th>Player</th>
+        <th>Score</th>
+    </tr>
+    <?php /** @var DartsGame_Model_Player $player */ ?>
+    <?php foreach ($this->players as $player) { ?>
+        <tr>
+            <td><?= $this->escape($player->getFullName()) ?></td>
+            <td><?= $this->escape($game->getScoreForPlayer($player)) ?></td>
+        </tr>
+    <?php } ?>
+</table>
+
+<div class="navigation-container">
+    <a id="start-new-game" class="button"
+       onclick="document.getElementById('turn').submit(); return false;"
+       href="#">next</a>
+
+    <a id="reset-game" class="reset-link" href="<?= $this->url(array('controller' => 'game', 'action' => 'reset')) ?>">
+        Reset game
+    </a>
+</div>

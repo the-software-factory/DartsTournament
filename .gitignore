@@ -1,0 +1,7 @@
+.idea
+.vagrant
+composer.lock
+vendor
+html
+build
+.DS_Store

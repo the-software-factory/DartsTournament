@@ -1,0 +1,101 @@
+*{
+    font-family: arial, helvetica, verdana, sans-serif;
+}
+
+h1 {
+    font-size: 2em;
+    text-align: center;
+}
+
+h2, h3 {
+    font-size: 1.5em;
+}
+
+h3, th {
+    font-size: 1.2em;
+}
+
+#content {
+    width: 50%;
+    margin: 0 auto;
+}
+
+label {
+    display: inline;
+}
+
+input {
+    font-size: 1em;
+}
+
+dd {
+    margin: 0;
+}
+
+table {
+    width: 100%;
+    margin: 0;
+    border-collapse:collapse
+}
+
+table th {
+    text-align: left;
+    background-color: #F0F0F0;
+    padding: 0.5em 0;
+}
+
+table.list td {
+    border-bottom: 1px solid #F0F0F0;
+}
+
+table.list td, table.list th{
+    padding: 0.5em
+}
+
+table.throws {
+    margin: 4em 0;
+}
+
+table.throws tbody tr {
+    height: 5em;
+}
+
+table.throws td {
+    width: 33%;
+}
+
+.button {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0px;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 20px;
+    background: #308f00;
+    padding: 10px 20px 10px 20px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.reset-link {
+    padding: 3em;
+    color: #ce001e;
+}
+
+.button:hover {
+    background: #187a00;
+    text-decoration: none;
+}
+
+.navigation-container {
+    margin: 5em 0 3em 0;
+    text-align: center;
+}
+
+#turn-header {
+    text-align: center;
+}
+
+.center-text {
+    text-align: center;
+}

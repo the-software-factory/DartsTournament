@@ -1,0 +1,25 @@
+<VirtualHost *:80>
+
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+
+	DocumentRoot /var/www/public
+
+	<Directory /var/www/public>
+		Options Indexes FollowSymLinks
+		AllowOverride All
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	SetEnv APPLICATION_ENV development
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	LogLevel warn
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+	Alias /tests/coverage /home/vagrant/coverage
+
+</VirtualHost>

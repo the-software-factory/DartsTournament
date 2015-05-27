@@ -1,0 +1,25 @@
+<?php
+$this->title = "Darts Tournament!";
+$this->headTitle($this->title);
+?>
+
+<h2>Players list:</h2>
+<table class="list">
+    <tr>
+        <th>Full name</th>
+        <th>Games won</th>
+    </tr>
+    <?php foreach ($this->players as $player) { ?>
+        <tr>
+            <?php /** @var $player DartsGame_Model_Player */ ?>
+            <td><?= $this->escape($player->getFullName()); ?></td>
+            <td><?= $this->escape($player->getGamesWon()); ?></td>
+        </tr>
+    <?php } ?>
+</table>
+
+<div class="navigation-container">
+    <a id="start-new-game" class="button" href="<?= $this->url(array('controller' => 'game', 'action' => 'start')) ?>">
+        Start new game
+    </a>
+</div>

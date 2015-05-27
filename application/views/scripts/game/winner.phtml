@@ -1,0 +1,13 @@
+<div class="center-text">
+    <h2>And the winner is...</h2>
+
+    <h1><?= $this->winner->getFullName() ?> !</h1>
+
+    <img src="/img/yay.jpg" />
+</div>
+
+<div class="navigation-container">
+    <a id="end-game" class="button"
+       onclick="document.getElementById('update-score').submit(); return false;"
+       href="<?= $this->url(array('controller' => 'game', 'action' => 'end')) ?>">end game</a>
+</div>
