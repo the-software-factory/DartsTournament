@@ -1,39 +1,44 @@
 <?php
 
 /**
- * Handles session state related to a game.
+ * {@inheritdoc}.
+ *
+ * Implementation using Zend's session storage.
  */
-class DartsGame_Service_Session extends Zend_Session_Namespace
+class DartsGame_Service_Session extends Zend_Session_Namespace implements DartsGame_Service_SessionInterface
 {
     const SESSION_NAMESPACE = "darts-game";
 
     /**
-     * Construct.
+     * @var DartsGame_Model_Repository_PlayersInterface
      */
-    public function __construct()
+    private $playersTable;
+
+    /**
+     * @param DartsGame_Model_Repository_PlayersInterface $playersTable
+     */
+    public function __construct(DartsGame_Model_Repository_PlayersInterface $playersTable)
     {
         parent::__construct(self::SESSION_NAMESPACE);
+
+        $this->playersTable = $playersTable;
     }
 
     /**
-     * Returns the current game.
-     *
-     * @return DartsGame_Model_Game
+     * {@inheritdoc}
      */
     public function getGame()
     {
         // Since the player is stored in session, we need to reconnect it to its table.
         if ($this->game && $this->game->getCurrentPlayer() && !$this->game->getCurrentPlayer()->isConnected()) {
-            $this->game->getCurrentPlayer()->setTable(new DartsGame_Model_Table_Players()); // Bad
+            $this->game->getCurrentPlayer()->setTable($this->playersTable);
         }
 
         return $this->game;
     }
 
     /**
-     * Sets a new game in session.
-     *
-     * @param DartsGame_Model_Game $game
+     * {@inheritdoc}
      */
     public function setGame(DartsGame_Model_Game $game)
     {
@@ -41,7 +46,7 @@ class DartsGame_Service_Session extends Zend_Session_Namespace
     }
 
     /**
-     * Resets the current session state.
+     * {@inheritdoc}
      */
     public function reset()
     {

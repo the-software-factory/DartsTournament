@@ -2,6 +2,8 @@
 /** @var DartsGame_Model_Game $game */
 $game = $this->game;
 ?>
+<?php $this->headTitle('Round #' . $game->getCurrentTurnNumber()); ?>
+
 <div id="turn-header">
     <h2><?= $this->escape($game->getCurrentPlayer()->getFullName()) ?> - Round
         # <?= $this->escape($game->getCurrentTurnNumber()) ?></h2>
@@ -9,7 +11,7 @@ $game = $this->game;
     <h1>Points: <?= $this->escape($this->scoreBoard->getScoreForPlayer($game->getCurrentPlayer())) ?></h1>
 </div>
 
-<form id="<?= $this->form->getName() ?>" action="#" method="POST">
+<form id="<?php echo $this->form->getName() ?>" action="#" method="POST">
     <table class="throws">
         <thead>
         <tr>
@@ -21,18 +23,18 @@ $game = $this->game;
         <tbody>
         <tr>
             <td><h3>Throw 1</h3></td>
-            <td><?= $this->form->scores0 ?></td>
-            <td><?= $this->form->multipliers0 ?></td>
+            <td><?php echo $this->form->scores0 ?></td>
+            <td><?php echo $this->form->multipliers0 ?></td>
         </tr>
         <tr>
             <td><h3>Throw 2</h3></td>
-            <td><?= $this->form->scores1 ?></td>
-            <td><?= $this->form->multipliers1 ?></td>
+            <td><?php echo $this->form->scores1 ?></td>
+            <td><?php echo $this->form->multipliers1 ?></td>
         </tr>
         <tr>
             <td><h3>Throw 3</h3></td>
-            <td><?= $this->form->scores2 ?></td>
-            <td><?= $this->form->multipliers2 ?></td>
+            <td><?php echo $this->form->scores2 ?></td>
+            <td><?php echo $this->form->multipliers2 ?></td>
         </tr>
         </tbody>
     </table>
@@ -47,14 +49,14 @@ $game = $this->game;
     <?php /** @var DartsGame_Model_Player $player */ ?>
     <?php foreach ($this->players as $player) { ?>
         <tr>
-            <td><?= $this->escape($player->getFullName()) ?></td>
-            <td><?= $this->escape($this->scoreBoard->getScoreForPlayer($player)) ?></td>
+            <td><?php echo $this->escape($player->getFullName()) ?></td>
+            <td><?php echo $this->escape($this->scoreBoard->getScoreForPlayer($player)) ?></td>
         </tr>
     <?php } ?>
 </table>
 
 <div class="navigation-container">
-    <a id="start-new-game" class="button"
+    <a id="next-turn" class="button"
        onclick="document.getElementById('turn').submit(); return false;"
        href="#">next</a>
 

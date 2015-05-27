@@ -1,6 +1,6 @@
 <?php
 
-class ErrorController extends Zend_Controller_Action
+class ErrorController extends DartsGame_Controller_AbstractController
 {
     public function errorAction()
     {

@@ -3,19 +3,50 @@
 /**
  * Handles the game flow.
  */
-class GameController extends Zend_Controller_Action
+class GameController extends DartsGame_Controller_AbstractController
 {
+    /**
+     * @var DartsGame_Service_GameManagerInterface
+     */
+    private $gameManager;
+
+    /**
+     * @var DartsGame_Model_Repository_PlayersInterface
+     */
+    private $playersTable;
+
+    /**
+     * @var DartsGame_Service_ScoreBoardInterface
+     */
+    private $scoreBoard;
+
+    /**
+     * @var DartsGame_Service_SessionInterface
+     */
+    private $session;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function init()
+    {
+        parent::init();
+
+        // NOTE: Zend1 does not easily allow to use dependency injection on controllers, so we just "simulate" it.
+        $this->gameManager = $this->container['gameManager'];
+        $this->playersTable = $this->container['playersTable'];
+        $this->scoreBoard = $this->container['scoreBoard'];
+        $this->session = $this->container['session'];
+    }
+
     /**
      * Allows to start a new game using the existing players.
      */
     public function startAction()
     {
-        $session = new DartsGame_Service_Session(); // Bad
-
         // Make sure a game is not in progress before allowing the user to start a new one.
-        if ($this->getRequest()->isGet() && !$session->getGame()) {
-            $gameManager = new DartsGame_Service_GameManager(); // Bad
-            $gameManager->start();
+        if ($this->getRequest()->isGet() && !$this->session->getGame()) {
+            $this->gameManager->start();
             $this->redirect('game/turn');
         } else {
             $this->redirect('/');
@@ -27,10 +58,7 @@ class GameController extends Zend_Controller_Action
      */
     public function turnAction()
     {
-        $session = new DartsGame_Service_Session(); // Bad
-        $scoreBoard = new DartsGame_Service_ScoreBoard(); // Bad
-
-        $game = $session->getGame();
+        $game = $this->session->getGame();
         if (!$game) {
             $this->redirect('/');
         }
@@ -39,25 +67,22 @@ class GameController extends Zend_Controller_Action
         $params = $this->getRequest()->getParams();
         $form->populate($params);
         if ($this->getRequest()->isPost() && $form->isValid($params)) {
-            $scoreBoard->registerScores(
+            $this->scoreBoard->registerScores(
                 $game->getCurrentPlayer(),
                 array_values($params['scores']),
                 array_values($params['multipliers'])
             );
-
-            $gameManager = new DartsGame_Service_GameManager(); // Bad
-            if ($gameManager->advance()) {
+            if ($this->gameManager->advance()) {
                 $this->redirect('game/turn');
             } else {
                 $this->redirect('game/winner');
             }
         } else {
             // Print current standings to the view
-            $playersTable = new DartsGame_Model_Table_Players(); // Bad
             $this->view->form = $form;
-            $this->view->game = $session->getGame();
-            $this->view->players = $playersTable->fetchAllAsArray();
-            $this->view->scoreBoard = $scoreBoard;
+            $this->view->game = $this->session->getGame();
+            $this->view->players = $this->playersTable->findAll();
+            $this->view->scoreBoard = $this->scoreBoard;
         }
     }
 
@@ -66,11 +91,8 @@ class GameController extends Zend_Controller_Action
      */
     public function winnerAction()
     {
-        $session = new DartsGame_Service_Session(); // Bad
-        $gameManager = new DartsGame_Service_GameManager(); // Bad
-
-        $this->view->game = $session->getGame();
-        $this->view->winner = $gameManager->getWinner();
+        $this->view->game = $this->session->getGame();
+        $this->view->winner = $this->gameManager->getWinner();
     }
 
     /**
@@ -78,8 +100,7 @@ class GameController extends Zend_Controller_Action
      */
     public function endAction()
     {
-        $gameManager = new DartsGame_Service_GameManager(); // Bad
-        $gameManager->end();
+        $this->gameManager->end();
         $this->redirect('/');
     }
 
@@ -88,8 +109,7 @@ class GameController extends Zend_Controller_Action
      */
     public function resetAction()
     {
-        $session = new DartsGame_Service_Session(); // Bad
-        $session->reset();
+        $this->session->reset();
         $this->redirect('/');
     }
 }

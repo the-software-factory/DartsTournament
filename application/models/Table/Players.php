@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Provides access to players instances.
+ * {@inheritdoc}
  */
-class DartsGame_Model_Table_Players extends Zend_Db_Table_Abstract
+class DartsGame_Model_Table_Players extends Zend_Db_Table_Abstract implements DartsGame_Model_Repository_PlayersInterface
 {
     /**
      * {@inheritdoc}
@@ -16,11 +16,9 @@ class DartsGame_Model_Table_Players extends Zend_Db_Table_Abstract
     protected $_rowClass = 'DartsGame_Model_Player';
 
     /**
-     * Returns an array of players.
-     *
-     * @return DartsGame_Model_Player[]
+     * {@inheritdoc}
      */
-    public function fetchAllAsArray()
+    public function findAll()
     {
         $result = array();
         foreach ($this->fetchAll() as $row) {
@@ -31,11 +29,7 @@ class DartsGame_Model_Table_Players extends Zend_Db_Table_Abstract
     }
 
     /**
-     * Returns the player with id $id.
-     *
-     * @param int $id
-     * @return Zend_Db_Table_Row_Abstract
-     * @throws Zend_Db_Table_Exception
+     * {@inheritdoc}
      */
     public function findByID($id)
     {

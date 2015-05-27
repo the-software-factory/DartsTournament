@@ -65,9 +65,10 @@ class DartsGame_Form_Turn extends Zend_Form
         return $select->setLabel('Multiplier')
             ->setBelongsTo('multipliers')
             ->addMultiOptions(array(
-                '1' => 'x 1',
-                '2' => 'x 2',
-                '3' => 'x 3'
-            ));
+                    '1' => 'x 1',
+                    '2' => 'x 2',
+                    '3' => 'x 3'
+                )
+            );
     }
 }

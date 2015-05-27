@@ -3,19 +3,21 @@
 /**
  * Entry point for application users.
  */
-class IndexController extends Zend_Controller_Action
+class IndexController extends DartsGame_Controller_AbstractController
 {
     /**
      * Shows the list of players about to start the tournament.
      */
     public function indexAction()
     {
+        /** @var DartsGame_Service_Session $session */
+        $session = $this->container['session'];
         // If there's a game in progress, redirect to the turn action.
-        $session = new DartsGame_Service_Session(); // Bad
         if ($session->getGame()) {
             $this->redirect('game/turn');
         } else {
-            $playersTable = new DartsGame_Model_Table_Players(); // Bad
+            /** @var DartsGame_Model_Repository_PlayersInterface $playersTable */
+            $playersTable = $this->container['playersTable'];
             $this->view->players = $playersTable->fetchAll();
         }
     }
