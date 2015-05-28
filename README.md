@@ -33,4 +33,10 @@ Rules for 501 double out can be found here: http://www.flyordie.com/games/help/d
 ## App versions ##
 * Version 1, "oh god why" - Most of the logic is in the controller, SOLID principles are all violated, it's impossible to write proper unit tests.
 * Version 2, "meh" - Logic has been factored in several service classes, but there are no interfaces nor dependency injection whatsoever.
-* Version 3, "not bad" - Services are now implementing interfaces and dependency injection is properly done via a service container. All units depend upon abstractions.
+* Version 3, "not bad" - Services are now implementing interfaces and dependency injection is properly done via a service container. All units now depend upon abstractions.
+
+## Slides ##
+Below you can find the slides we created for the seminar @ UNIVPM. Italian only, sorry about that!
+
+https://docs.google.com/presentation/d/1AfmMSlg53j8Ut21iRmaW6r52eQsAXPKyKyt1X4ipWYE
+https://docs.google.com/presentation/d/1wt-zGrcRObJEhR9Zlh5142PFis9yNikP6mRA4ZOl_nU
