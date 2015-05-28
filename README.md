@@ -38,5 +38,5 @@ Rules for 501 double out can be found here: http://www.flyordie.com/games/help/d
 ## Slides ##
 Below you can find the slides we created for the seminar @ UNIVPM. Italian only, sorry about that!
 
-https://docs.google.com/presentation/d/1AfmMSlg53j8Ut21iRmaW6r52eQsAXPKyKyt1X4ipWYE
-https://docs.google.com/presentation/d/1wt-zGrcRObJEhR9Zlh5142PFis9yNikP6mRA4ZOl_nU
+* https://docs.google.com/presentation/d/1AfmMSlg53j8Ut21iRmaW6r52eQsAXPKyKyt1X4ipWYE
+* https://docs.google.com/presentation/d/1wt-zGrcRObJEhR9Zlh5142PFis9yNikP6mRA4ZOl_nU
