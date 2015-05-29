@@ -36,6 +36,7 @@ cp /var/www/.provision/.profile /home/vagrant/.profile
 
 echo "Creating folder for code coverage report"
 mkdir -p /home/vagrant/coverage
+chown -R vagrant:vagrant /home/vagrant/coverage
 
 echo "Creating schema and fixtures..."
 mysql -uroot -ppassword < /var/www/.provision/db.sql
