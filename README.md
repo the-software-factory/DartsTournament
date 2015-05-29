@@ -40,3 +40,16 @@ Below you can find the slides we created for the seminar @ UNIVPM. Italian only,
 
 * https://docs.google.com/presentation/d/1AfmMSlg53j8Ut21iRmaW6r52eQsAXPKyKyt1X4ipWYE
 * https://docs.google.com/presentation/d/1wt-zGrcRObJEhR9Zlh5142PFis9yNikP6mRA4ZOl_nU
+
+# The Challenge to win a Raspberry Pi 2! #
+The application is missing the following feature:
+
+* Right now the first player that reaches 0 points wins, this shouldn't happen, we should allow all players to end the turn before ending the game.
+* If two players reach 0 points in the same turn they should go through N turns until one of the players scores more then the other.
+
+## The challenge rules ##
+Implement one or both features described above alone or with a team (maximum 4 people) and submit a pull request before June 7th 2015.
+
+We will evaluate your work and reward the best implementation.
+
+Have fun!
