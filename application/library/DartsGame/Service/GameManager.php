@@ -83,9 +83,22 @@ class DartsGame_Service_GameManager implements DartsGame_Service_GameManagerInte
      */
     public function getWinner()
     {
-        $player = $this->scoreBoard->getPlayerInPosition(1);
-        if ($this->scoreBoard->getScoreForPlayer($player) === 0) {
-            return $player;
+        $playerInFirstPosition = $this->scoreBoard->getPlayerInPosition(1);
+
+        if ($this->scoreBoard->getScoreForPlayer($playerInFirstPosition) === 0) {
+            $game = $this->session->getGame();
+
+            foreach ($this->playersRepository->findAll() as $player) {
+                if (
+                    count($game->getTurnsForPlayer($player))
+                    !==
+                    count($game->getTurnsForPlayer($playerInFirstPosition))
+                ){
+                    return null;
+                }
+            }
+
+            return $playerInFirstPosition;
         }
 
         return null;
