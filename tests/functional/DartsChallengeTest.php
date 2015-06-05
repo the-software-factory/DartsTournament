@@ -44,10 +44,26 @@ class DartsChallengeTests extends PHPUnit_Framework_TestCase
         // First page.
         $this->webDriver->findElement(WebDriverBy::id('start-new-game'))->click();
 
-        // Simulate 2 perfect rounds for all players
+        // Simulate 3 perfect rounds for all players
         for ($round = 1; $round < 3; $round++) {
             $this->assertContains('Round #'.$round, $this->webDriver->getTitle());
             for ($player = 1; $player <= 4; $player++) {
+                $this->executePerfectRound();
+            }
+        }
+		
+		// Simulate 1 perfect rounds for three players, these will go to first playoffs
+        for ($round = 1; $round < 3; $round++) {
+            $this->assertContains('Round #'.$round, $this->webDriver->getTitle());
+            for ($player = 1; $player <= 3; $player++) {
+                $this->executePerfectRound();
+            }
+        }
+		
+		// Simulate 1 perfect rounds for two players, these will go to second playoffs
+        for ($round = 1; $round < 3; $round++) {
+            $this->assertContains('Round #'.$round, $this->webDriver->getTitle());
+            for ($player = 1; $player <= 2; $player++) {
                 $this->executePerfectRound();
             }
         }
