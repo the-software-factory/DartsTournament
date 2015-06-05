@@ -8,7 +8,7 @@ class DartsGame_Service_ScoreBoard implements DartsGame_Service_ScoreBoardInterf
     /**
      * The score at which every match starts.
      */
-    const STARTING_SCORE = 20;//501;
+    const STARTING_SCORE = 501;
 
     /**
      * @var DartsGame_Model_Repository_PlayersInterface
