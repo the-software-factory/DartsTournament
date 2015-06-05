@@ -38,6 +38,7 @@ class DartsGame_Service_ScoreBoard implements DartsGame_Service_ScoreBoardInterf
         $this->playersRepository = $playersRepository;
         $this->session = $session;
         $this->turnFactory = $turnFactory;
+		$this->bestScore = 0;
     }
 
     /**
@@ -76,11 +77,19 @@ class DartsGame_Service_ScoreBoard implements DartsGame_Service_ScoreBoardInterf
     {
         $turns = $this->session->getGame()->getTurnsForPlayer($player);
         $grandTotal = self::STARTING_SCORE;
+		$flag = false;
         foreach ($turns as $turn) {
             $turnScore = $turn->getTotalScore();
-            if (!$turn->isBust($grandTotal)) {
-                $grandTotal -= $turnScore;
-            }
+			if($flag && $player->getPlayOff()){
+            	$grandTotal += $turnScore;
+			} else {
+				if (!$turn->isBust($grandTotal)) {
+                	$grandTotal -= $turnScore;
+					if ($grandTotal === 0){
+						$flag=true;
+					}
+            	}
+			}
         }
 
         return $grandTotal;

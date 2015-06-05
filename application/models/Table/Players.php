@@ -27,7 +27,22 @@ class DartsGame_Model_Table_Players extends Zend_Db_Table_Abstract implements Da
 
         return $result;
     }
+	
+	/**
+	 * 
+	 */
+	public function findAllPlayOff()
+    {
+        $result = array();
+        foreach ($this->fetchAll() as $row) {
+        	if($row->getPlayOff()){
+        		$result[] = $row;
+			}
+        }
 
+        return $result;
+    }
+	 
     /**
      * {@inheritdoc}
      */

@@ -19,6 +19,66 @@ class DartsGame_Model_Game
      * @var DartsGame_Model_Player
      */
     private $currentPlayer;
+	
+	/**
+	 * @var That variable determines the type of game
+	 */
+	private $isPlayOff = false;
+	
+	/**
+     * @var DartsGame_Service_TurnFactoryInterface
+     */
+    private $bestScore = 0;
+	
+	
+	/**
+	 * @param int score to be checked
+	 * @return true if the score is greater than the best score
+	 */
+	public function isBestScore($score)
+	{
+		if($score > $this->bestScore){
+			$this->bestScore = $score;
+			return true;
+		} 
+		return false;
+	}
+	
+	/**
+	 * @param int score to be checked
+	 * @return true if the score is lower than the best score
+	 */
+	public function isWorstScore($score)
+	{
+		if($score < $this->bestScore){
+			return true;
+		} 
+		return false;
+	}
+	
+	/**
+	 * @return int the best score
+	 */
+	public function getBestScore()
+	{
+		return $this->bestScore;
+	}
+	
+	/**
+	 * @param Boolean that determines whether the playoff is active or not
+	 */
+	public function setIsPlayOff($bool)
+	{
+		$this->isPlayOff = $bool;
+	}
+
+	/**
+	 * @return The type of game
+	 */
+	 public function getIsPlayOff()
+	{
+		return $this->isPlayOff;
+	}
 
     /**
      * @param DartsGame_Model_Turn $turn

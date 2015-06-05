@@ -51,6 +51,9 @@ class DartsGame_Service_Session extends Zend_Session_Namespace implements DartsG
     public function reset()
     {
         $this->resetSingleInstance(self::SESSION_NAMESPACE);
+		foreach ($this->playersTable->findAll() as $player) {
+			$player->setPlayOff(false);
+		}
         $this->game = null;
     }
 }

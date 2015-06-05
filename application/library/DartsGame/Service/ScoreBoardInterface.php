@@ -5,6 +5,7 @@
  */
 interface DartsGame_Service_ScoreBoardInterface
 {
+	
     /**
      * Returns the player in the given position. NOTE: position is 1-based, so the winner would have position 1.
      *

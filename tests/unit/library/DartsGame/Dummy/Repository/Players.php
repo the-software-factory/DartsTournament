@@ -13,6 +13,14 @@ class DartsGame_Dummy_Repository_Players implements DartsGame_Model_Repository_P
     {
         // TODO: Implement findAll() method.
     }
+	
+	/**
+     * {@inheritdoc}
+     */
+    public function findAllPlayOff()
+    {
+        // TODO: Implement findAllPlayOff() method.
+    }
 
     /**
      * {@inheritdoc}

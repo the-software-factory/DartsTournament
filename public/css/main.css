@@ -64,6 +64,10 @@ table.throws td {
     width: 33%;
 }
 
+#exclude{
+	text-decoration: line-through;
+}
+
 .button {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;

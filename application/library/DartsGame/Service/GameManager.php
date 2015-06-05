@@ -19,6 +19,11 @@ class DartsGame_Service_GameManager implements DartsGame_Service_GameManagerInte
      * @var DartsGame_Service_SessionInterface
      */
     private $session;
+	
+	 /**
+     * @var DartsGame_Service_SortingInterface
+     */
+    private $sorting;
 
     /**
      * @param DartsGame_Model_Repository_PlayersInterface $playersRepository
@@ -28,11 +33,13 @@ class DartsGame_Service_GameManager implements DartsGame_Service_GameManagerInte
     public function __construct(
         DartsGame_Model_Repository_PlayersInterface $playersRepository,
         DartsGame_Service_ScoreBoardInterface $scoreBoard,
-        DartsGame_Service_SessionInterface $session
+        DartsGame_Service_SessionInterface $session,
+        DartsGame_Service_SortingInterface $sorting
     ) {
         $this->playersRepository = $playersRepository;
         $this->scoreBoard = $scoreBoard;
         $this->session = $session;
+		$this->sorting = $sorting;
     }
 
     /**
@@ -53,29 +60,64 @@ class DartsGame_Service_GameManager implements DartsGame_Service_GameManagerInte
      */
     public function advance()
     {
-        // First, check whether the current player won.
-        if ($this->getWinner()) {
-            return false;
-        }
-
-        // We just follow an alphabetic ordering (by first name).
-        $sortedPlayers = $this->playersRepository->findAll();
-        usort($sortedPlayers, function (DartsGame_Model_Player $player1, DartsGame_Model_Player $player2) {
-            return strcasecmp($player1->getFullName(), $player2->getFullName());
-        });
+    	$game = $this->session->getGame();
+		
+        if($game->getIsPlayOff()){
+        	$sortedPlayers = $this->sorting->sort($this->playersRepository->findAllPlayOff());
+    		$currentPlayerIndex = array_search($game->getCurrentPlayer(), $sortedPlayers);
+			$score = $this->scoreBoard->getScoreForPlayer($game->getCurrentPlayer());
+			//Check whether the current player reached bestscore, then remove previous player from playoff
+        	if ($game->isBestScore($score)) {
+				for ($i=0; $i < $currentPlayerIndex; $i++){
+					$sortedPlayers[$i]->setPlayOff(false);
+				}
+        	} else {
+        		if($game->isWorstScore($score)){
+        			$game->getCurrentPlayer()->setPlayOff(false);
+				}
+        	}
+		} else {
+			$sortedPlayers = $this->sorting->sort($this->playersRepository->findAll());
+			$currentPlayerIndex = array_search($game->getCurrentPlayer(), $sortedPlayers);
+			// Check whether the current player reached zero.
+			if($this->reachedZero($game->getCurrentPlayer())){
+				$game->getCurrentPlayer()->setPlayOff(true);
+			}
+		}	
 
         // If the current player is not the last in the turn, return the next one. Otherwise return null.
-        $game = $this->session->getGame();
-        $currentPlayerIndex = array_search($game->getCurrentPlayer(), $sortedPlayers);
-
-        if ($currentPlayerIndex === count($sortedPlayers) - 1 || $currentPlayerIndex === false) {
-            $game->incrementCurrentTurnNumber();
-            $game->setCurrentPlayer($sortedPlayers[0]);
+        if ($currentPlayerIndex === count($sortedPlayers) - 1 || $currentPlayerIndex === false){
+        	$cont = count($this->playersRepository->findAllPlayOff());
+			//We have only one winner
+			if($cont == 1){
+				return false;
+			}
+			//We have multiple winners, we proceed to playoff
+			if ($cont > 1){
+				$game->setIsPlayOff(true);
+				//Set only players who will participate to playoff
+				$sortedPlayers = $this->sorting->sort($this->playersRepository->findAllPlayOff());
+			}
+           	$game->incrementCurrentTurnNumber();
+           	$game->setCurrentPlayer($sortedPlayers[0]);
         } else {
-            $game->setCurrentPlayer($sortedPlayers[$currentPlayerIndex + 1]);
+           	$game->setCurrentPlayer($sortedPlayers[$currentPlayerIndex + 1]);
         }
 
         return true;
+    }
+	
+	/**
+     * {@inheritdoc}
+     */
+    public function reachedZero($player)
+    {
+    	if($player){
+        	if ($this->scoreBoard->getScoreForPlayer($player) === 0) {
+           		return true;
+			}
+		}
+		return false;
     }
 
     /**
@@ -83,12 +125,8 @@ class DartsGame_Service_GameManager implements DartsGame_Service_GameManagerInte
      */
     public function getWinner()
     {
-        $player = $this->scoreBoard->getPlayerInPosition(1);
-        if ($this->scoreBoard->getScoreForPlayer($player) === 0) {
-            return $player;
-        }
-
-        return null;
+        $player = $this->playersRepository->findAllPlayOff();
+        return $player[0];
     }
 
     /**
@@ -102,7 +140,6 @@ class DartsGame_Service_GameManager implements DartsGame_Service_GameManagerInte
         }
 
         $winner->incrementGamesWon();
-        $winner->save();
 
         $this->session->reset();
     }

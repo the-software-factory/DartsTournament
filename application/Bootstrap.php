@@ -17,6 +17,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             return new DartsGame_Service_Session($container['playersTable']);
         };
 
+		$container['sorting'] = function () {
+            return new  DartsGame_Service_Sorting();
+        };
+		
         $container['turnFactory'] = function () {
             return new  DartsGame_Service_TurnFactory();
         };
@@ -33,7 +37,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             return new DartsGame_Service_GameManager(
                 $container['playersTable'],
                 $container['scoreBoard'],
-                $container['session']
+                $container['session'],
+                $container['sorting']
             );
         };
 

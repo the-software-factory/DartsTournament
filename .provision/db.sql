@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS `players` (
   `first_name` varchar(45) NOT NULL,
   `last_name` varchar(45) NOT NULL,
   `games_won` int(11) NOT NULL DEFAULT 0,
+  `playoff` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
 
