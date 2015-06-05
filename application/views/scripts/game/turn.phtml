@@ -49,7 +49,7 @@ $game = $this->game;
     </tr>
     <?php /** @var DartsGame_Model_Player $player */ ?>
     <?php foreach ($this->players as $player) { ?>
-        <tr <?php if($this->game->getPlayOff() && !$player->getPlayOff()){ ?>
+        <tr <?php if($this->game->getIsPlayOff() && !$player->getPlayOff()){ ?>
         	id = 'exclude'
         	<?php } ?>
         >

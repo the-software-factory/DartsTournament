@@ -89,9 +89,9 @@ class GameController extends DartsGame_Controller_AbstractController
             $this->view->game = $this->session->getGame();
             $this->view->players = $this->playersTable->findAll();
             $this->view->scoreBoard = $this->scoreBoard;
-			if($this->session->getGame()->getPlayOff()){
+			if($this->session->getGame()->getIsPlayOff()){
 				$this->view->info = ' PlayOff';
-				$this->view->bestScore = 'BestScore: '.$this->scoreBoard->getBestScore();
+				$this->view->bestScore = 'BestScore: '.$this->session->getGame()->getBestScore();
 			}
         }
     }

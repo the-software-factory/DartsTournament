@@ -5,16 +5,6 @@
  */
 interface DartsGame_Service_ScoreBoardInterface
 {
-	/**
-	 * @param int score to be checked
-	 * @return true if the score is greater than the best score
-	 */
-	public function isBestScore($score);
-	
-	/**
-	 * @return int the best score
-	 */
-	public function getBestScore();
 	
     /**
      * Returns the player in the given position. NOTE: position is 1-based, so the winner would have position 1.

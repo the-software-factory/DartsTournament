@@ -61,42 +61,42 @@ class DartsGame_Service_GameManager implements DartsGame_Service_GameManagerInte
     public function advance()
     {
     	$game = $this->session->getGame();
-    
-        if($game->getPlayOff()){
+		
+        if($game->getIsPlayOff()){
         	$sortedPlayers = $this->sorting->sort($this->playersRepository->findAllPlayOff());
     		$currentPlayerIndex = array_search($game->getCurrentPlayer(), $sortedPlayers);
 			$score = $this->scoreBoard->getScoreForPlayer($game->getCurrentPlayer());
-			//Check whether the current player reached bestscore or draw
-        	if ($this->scoreBoard->isBestScore($score)) {
-				for ($i=0;$i<$currentPlayerIndex;$i++){
+			//Check whether the current player reached bestscore, then remove previous player from playoff
+        	if ($game->isBestScore($score)) {
+				for ($i=0; $i < $currentPlayerIndex; $i++){
 					$sortedPlayers[$i]->setPlayOff(false);
 				}
+        	} else {
+        		if($game->isWorstScore($score)){
+        			$game->getCurrentPlayer()->setPlayOff(false);
+				}
         	}
-        } else {
-        	$sortedPlayers = $this->sorting->sort($this->playersRepository->findAll());
-			if($game->getCurrentPlayer()){
-				// Check whether the current player reached zero.
-        		$this->reachedZero($game->getCurrentPlayer());
-			} else {
-				$game->incrementCurrentTurnNumber();
-            	$game->setCurrentPlayer($sortedPlayers[0]);
-				return true;
-			} 			
-		}
-        
+		} else {
+			$sortedPlayers = $this->sorting->sort($this->playersRepository->findAll());
+			$currentPlayerIndex = array_search($game->getCurrentPlayer(), $sortedPlayers);
+			// Check whether the current player reached zero.
+			if($this->reachedZero($game->getCurrentPlayer())){
+				$game->getCurrentPlayer()->setPlayOff(true);
+			}
+		}	
+
         // If the current player is not the last in the turn, return the next one. Otherwise return null.
-        $currentPlayerIndex = array_search($game->getCurrentPlayer(), $sortedPlayers);
-        if ($currentPlayerIndex === count($sortedPlayers) - 1) {
+        if ($currentPlayerIndex === count($sortedPlayers) - 1 || $currentPlayerIndex === false){
         	$cont = count($this->playersRepository->findAllPlayOff());
 			//We have only one winner
-			if($cont==1){
+			if($cont == 1){
 				return false;
 			}
 			//We have multiple winners, we proceed to playoff
 			if ($cont > 1){
-				$game->setPlayOff(true);
-				//Set only the players who will participate in the playoff
-				$sortedPlayers = $this->playersRepository->findAllPlayOff();
+				$game->setIsPlayOff(true);
+				//Set only players who will participate to playoff
+				$sortedPlayers = $this->sorting->sort($this->playersRepository->findAllPlayOff());
 			}
            	$game->incrementCurrentTurnNumber();
            	$game->setCurrentPlayer($sortedPlayers[0]);
@@ -110,11 +110,12 @@ class DartsGame_Service_GameManager implements DartsGame_Service_GameManagerInte
 	/**
      * {@inheritdoc}
      */
-    public function reachedZero(DartsGame_Model_Player $player)
+    public function reachedZero($player)
     {
-        if ($this->scoreBoard->getScoreForPlayer($player) === 0) {
-           	$player->setPlayOff(true);
-			return true;
+    	if($player){
+        	if ($this->scoreBoard->getScoreForPlayer($player) === 0) {
+           		return true;
+			}
 		}
 		return false;
     }
