@@ -19,6 +19,27 @@ class DartsGame_Model_Game
      * @var DartsGame_Model_Player
      */
     private $currentPlayer;
+	
+	/**
+	 * @var That variable determines the type of game
+	 */
+	private $playOff = false;
+	
+	/**
+	 * @param Boolean that determines whether the playoff is active or not
+	 */
+	public function setPlayOff($bool)
+	{
+		$this->playOff = $bool;
+	}
+
+	/**
+	 * @return The type of game
+	 */
+	 public function getPlayOff()
+	{
+		return $this->playOff;
+	}
 
     /**
      * @param DartsGame_Model_Turn $turn

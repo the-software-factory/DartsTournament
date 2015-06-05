@@ -24,6 +24,11 @@ class GameController extends DartsGame_Controller_AbstractController
      * @var DartsGame_Service_SessionInterface
      */
     private $session;
+	
+	/**
+     * @var DartsGame_Service_SortingInterface
+     */
+    private $sorting;
 
     /**
      * {@inheritdoc}
@@ -37,6 +42,7 @@ class GameController extends DartsGame_Controller_AbstractController
         $this->playersTable = $this->container['playersTable'];
         $this->scoreBoard = $this->container['scoreBoard'];
         $this->session = $this->container['session'];
+		$this->sorting = $this->container['sorting'];
     }
 
     /**
@@ -83,6 +89,10 @@ class GameController extends DartsGame_Controller_AbstractController
             $this->view->game = $this->session->getGame();
             $this->view->players = $this->playersTable->findAll();
             $this->view->scoreBoard = $this->scoreBoard;
+			if($this->session->getGame()->getPlayOff()){
+				$this->view->info = ' PlayOff';
+				$this->view->bestScore = 'BestScore: '.$this->scoreBoard->getBestScore();
+			}
         }
     }
 

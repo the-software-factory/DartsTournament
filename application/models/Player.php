@@ -43,10 +43,22 @@ class DartsGame_Model_Player extends Zend_Db_Table_Row_Abstract
     public function incrementGamesWon()
     {
         $this->games_won++;
+		$this->save();
     }
 
     public function getGamesWon()
     {
         return $this->games_won;
+    }
+	
+	public function setPlayOff($bool)
+    {
+        $this->playoff = $bool;
+		$this->save();
+    }
+	
+	public function getPlayOff()
+    {
+        return $this->playoff;
     }
 }

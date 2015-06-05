@@ -8,7 +8,7 @@ class DartsGame_Service_ScoreBoard implements DartsGame_Service_ScoreBoardInterf
     /**
      * The score at which every match starts.
      */
-    const STARTING_SCORE = 501;
+    const STARTING_SCORE = 20;//501;
 
     /**
      * @var DartsGame_Model_Repository_PlayersInterface
@@ -24,6 +24,11 @@ class DartsGame_Service_ScoreBoard implements DartsGame_Service_ScoreBoardInterf
      * @var DartsGame_Service_TurnFactoryInterface
      */
     private $turnFactory;
+	
+	/**
+     * @var DartsGame_Service_TurnFactoryInterface
+     */
+    private $bestScore;
 
     /**
      * @param DartsGame_Model_Repository_PlayersInterface $playersRepository
@@ -38,7 +43,28 @@ class DartsGame_Service_ScoreBoard implements DartsGame_Service_ScoreBoardInterf
         $this->playersRepository = $playersRepository;
         $this->session = $session;
         $this->turnFactory = $turnFactory;
+		$this->bestScore = 0;
     }
+	
+	/**
+	 * {@inheritdoc}
+	 */
+	public function isBestScore($score)
+	{
+		if($score >= $this->bestScore){
+			$this->bestScore = $score;
+			return true;
+		} 
+		return false;
+	}
+	
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getBestScore()
+	{
+		return $this->bestScore;
+	}
 
     /**
      * {@inheritdoc}
@@ -76,11 +102,19 @@ class DartsGame_Service_ScoreBoard implements DartsGame_Service_ScoreBoardInterf
     {
         $turns = $this->session->getGame()->getTurnsForPlayer($player);
         $grandTotal = self::STARTING_SCORE;
+		$flag = false;
         foreach ($turns as $turn) {
             $turnScore = $turn->getTotalScore();
-            if (!$turn->isBust($grandTotal)) {
-                $grandTotal -= $turnScore;
-            }
+			if($flag && $player->getPlayOff()){
+            	$grandTotal += $turnScore;
+			} else {
+				if (!$turn->isBust($grandTotal)) {
+                	$grandTotal -= $turnScore;
+					if ($grandTotal === 0){
+						$flag=true;
+					}
+            	}
+			}
         }
 
         return $grandTotal;

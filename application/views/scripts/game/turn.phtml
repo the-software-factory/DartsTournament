@@ -5,10 +5,11 @@ $game = $this->game;
 <?php $this->headTitle('Round #' . $game->getCurrentTurnNumber()); ?>
 
 <div id="turn-header">
-    <h2><?= $this->escape($game->getCurrentPlayer()->getFullName()) ?> - Round
+    <h2><?= $this->escape($game->getCurrentPlayer()->getFullName()) ?><?= $this->escape($this->info) ?> - Round
         # <?= $this->escape($game->getCurrentTurnNumber()) ?></h2>
 
     <h1>Points: <?= $this->escape($this->scoreBoard->getScoreForPlayer($game->getCurrentPlayer())) ?></h1>
+    <h1><?= $this->escape($this->bestScore) ?></h1>
 </div>
 
 <form id="<?php echo $this->form->getName() ?>" action="#" method="POST">
@@ -48,7 +49,10 @@ $game = $this->game;
     </tr>
     <?php /** @var DartsGame_Model_Player $player */ ?>
     <?php foreach ($this->players as $player) { ?>
-        <tr>
+        <tr <?php if($this->game->getPlayOff() && !$player->getPlayOff()){ ?>
+        	id = 'exclude'
+        	<?php } ?>
+        >
             <td><?php echo $this->escape($player->getFullName()) ?></td>
             <td><?php echo $this->escape($this->scoreBoard->getScoreForPlayer($player)) ?></td>
         </tr>
